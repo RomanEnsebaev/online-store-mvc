@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title layout:fragment="title">Your Cart</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2>Your Cart</h2>
+
+    <table class="table" th:if="${cartItems}">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Price (each)</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${cartItems}">
+            <td th:text="${item.product.name}"></td>
+            <td th:text="${item.quantity}"></td>
+            <td th:text="${item.product.price}"></td>
+            <td th:text="${#numbers.formatDecimal(item.totalPrice, 2, 2, 'POINT')}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="text-end mt-3">
+        <h4>Total: $<span th:text="${#numbers.formatDecimal(cartTotal, 2, 2, 'POINT')}"></span></h4>
+    </div>
+
+    <form th:action="@{/cart/clear}" method="post">
+        <button class="btn btn-danger mt-3">Clear Cart</button>
+    </form>
+    <form th:action="@{/orders/place}" method="post">
+        <button class="btn btn-success mt-3 ms-3">Place Order</button>
+    </form>
+</div>
+</body>
+</html>
